@@ -1,5 +1,4 @@
-
-FROM node:10.11.0
+FROM node:10.15.2
 MAINTAINER Dan Lynn <docker@danlynn.org>
 
 # ember server on port 4200
@@ -31,9 +30,9 @@ RUN \
 
 # install bower
 RUN \
-	npm install -g bower@1.8.4
+	npm install -g bower@1.8.8
 
-# install chrome for default testem config (as of 2.15.0)
+# install chrome for default testem config (as of ember-cli 2.15.0)
 RUN \
     apt-get update &&\
     apt-get install -y \
