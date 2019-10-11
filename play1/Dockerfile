@@ -1,12 +1,13 @@
 FROM buildpack-deps:xenial-curl
 
-ARG pkg=java-1.8.0-amazon-corretto-jdk_8.212.04-2_amd64.deb
-ARG path=https://d3pxv6yz143wms.cloudfront.net/8.212.04.2
+ARG pkg=java-1.8.0-amazon-corretto-jdk_8.222.10-1_amd64.deb
+ARG path=https://d3pxv6yz143wms.cloudfront.net/8.222.10.1
 
 RUN apt-get -y update \
     && apt-get -y install java-common sudo python unzip \
     && wget $path/$pkg \
     && dpkg --install ./$pkg \
+    && curl https://bootstrap.pypa.io/get-pip.py || python \
     && rm $pkg \
     && rm -rf /var/lib/apt/lists/*
 
@@ -14,7 +15,7 @@ ENV JAVA_HOME=/usr/lib/jvm/java-1.8.0-amazon-corretto
 
 WORKDIR /opt
 
-ARG version=1.3.4
+ARG version=1.4.6
 
 RUN wget -q https://downloads.typesafe.com/play/$version/play-$version.zip && \
     unzip -q play-$version.zip && rm play-$version.zip
