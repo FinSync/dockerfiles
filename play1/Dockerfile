@@ -7,7 +7,6 @@ RUN apt-get -y update \
     && apt-get -y install java-common sudo python unzip \
     && wget $path/$pkg \
     && dpkg --install ./$pkg \
-    && curl https://bootstrap.pypa.io/get-pip.py || python \
     && rm $pkg \
     && rm -rf /var/lib/apt/lists/*
 
