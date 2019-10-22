@@ -7,6 +7,10 @@ RUN apt-get -y update \
     && apt-get -y install java-common sudo python unzip \
     && wget $path/$pkg \
     && dpkg --install ./$pkg \
+    && curl "https://s3.amazonaws.com/aws-cli/awscli-bundle.zip" -o "/tmp/awscli-bundle.zip" \
+    && unzip /tmp/awscli-bundle.zip -d /tmp \
+    && /tmp/awscli-bundle/install -i /usr/local/aws -b /usr/local/bin/aws \
+    && rm -rf /tmp/awscli-bundle* \
     && rm $pkg \
     && rm -rf /var/lib/apt/lists/*
 
