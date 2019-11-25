@@ -15,6 +15,7 @@ RUN sudo apt-get install -y libxml2-dev libxslt1-dev
 
 # for pdftk
 RUN sudo apt-get install -y pdftk
+USER root
 
 RUN sudo mkdir $APP_HOME
 
