@@ -1,4 +1,4 @@
-FROM ruby:2.4.2
+FROM ruby:2.4.9
 
 ########################################
 ENV APP_HOME /myapp
