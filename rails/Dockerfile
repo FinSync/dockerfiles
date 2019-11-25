@@ -21,6 +21,3 @@ RUN mkdir $APP_HOME
 WORKDIR $APP_HOME
 
 ADD . $APP_HOME
-
-RUN curl -sL https://deb.nodesource.com/setup_12.x | bash -
-RUN apt-get install nodejs
