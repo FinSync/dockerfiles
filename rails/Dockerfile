@@ -1,4 +1,4 @@
-FROM circleci/ruby:2.4-node
+FROM circleci/ruby:2.4.10-node
 
 ########################################
 ENV APP_HOME /myapp
