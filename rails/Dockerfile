@@ -1,4 +1,4 @@
-FROM circleci/ruby:3.0.3-bullseye-node
+FROM cimg/ruby:3.0.4-node
 
 ########################################
 ENV APP_HOME /myapp
