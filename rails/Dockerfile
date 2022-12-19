@@ -1,5 +1,4 @@
-# Change back to cimg/ruby once the Ruby 3.0.5 Dockerfile is fixes
-FROM finsync/dockerfiles:ruby3.0.5-node
+FROM cimg/ruby:3.0.5-node
 
 ########################################
 ENV APP_HOME /myapp
