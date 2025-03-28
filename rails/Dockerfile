@@ -1,4 +1,10 @@
-FROM cimg/ruby:3.0.5-node
+FROM node:18.20-alpine AS node_base
+
+FROM cimg/ruby:3.0.5
+
+# get node/npm binaries
+COPY --from=node_base /usr/local/bin /usr/local/bin
+COPY --from=node_base /usr/local/lib/node_modules/npm /usr/local/lib/node_modules/npm
 
 ########################################
 ENV APP_HOME /myapp
