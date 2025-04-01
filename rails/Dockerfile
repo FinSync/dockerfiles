@@ -6,6 +6,9 @@ FROM cimg/ruby:3.0.5
 COPY --from=node_base /usr/local/bin /usr/local/bin
 COPY --from=node_base /usr/local/lib/node_modules/npm /usr/local/lib/node_modules/npm
 
+# Create symbolic link for the nodejs path expected by rails, matches the path where CircleCI puts the binary: https://github.com/CircleCI-Public/cimg-ruby/blob/2cb03f2a4f02107a7994973c56c99978d925d779/3.0/node/Dockerfile
+RUN sudo ln -s /usr/local/bin/node /usr/local/bin/nodejs
+
 ########################################
 ENV APP_HOME /myapp
 ENV BUNDLE_PATH /cache
