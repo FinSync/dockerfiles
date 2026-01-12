@@ -1,54 +1,25 @@
-# syntax=docker/dockerfile:1
-# check=error=true
+FROM cimg/ruby:3.1.6-node
 
-# This Dockerfile is designed for production, not development. Use with Kamal or build'n'run by hand:
-# docker build -t walrus .
-# docker run -d -p 80:80 -e RAILS_MASTER_KEY=<value from config/master.key> --name walrus walrus
+########################################
+ENV APP_HOME=/myapp
+ENV BUNDLE_PATH=/cache
+########################################
+#RUN sudo su -c "printf \"deb http://archive.debian.org/debian/ jessie main\ndeb-src http://archive.debian.org/debian/ jessie main\ndeb http://security.debian.org jessie/updates main\ndeb-src http://security.debian.org jessie/updates main\" > /etc/apt/sources.list"
+#RUN sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 8B48AD6246925553 7638D0442B90D010 CBF8D6FD518E17E1
+#RUN sudo apt-get install debian-archive-keyring
+RUN sudo apt-get update -qq && sudo apt-get install -y build-essential
 
-# For a containerized dev environment, see Dev Containers: https://guides.rubyonrails.org/getting_started_with_devcontainer.html
+# for postgres
+RUN sudo apt-get install -y libpq-dev
 
-# Make sure RUBY_VERSION matches the Ruby version in .ruby-version
-ARG RUBY_VERSION=3.1.6
-FROM docker.io/library/ruby:$RUBY_VERSION-slim AS base
+# for nokogiri
+RUN sudo apt-get install -y libxml2-dev libxslt1-dev
 
-# Rails app lives here
-WORKDIR /rails
+# for pdftk
+RUN sudo apt-get install -y pdftk
 
-# Install base packages
-RUN apt-get update -qq && \
-    apt-get install --no-install-recommends -y curl libjemalloc2 libvips sqlite3 && \
-    rm -rf /var/lib/apt/lists /var/cache/apt/archives
+RUN sudo mkdir $APP_HOME
+RUN sudo chown -R $USER:$USER $APP_HOME
+WORKDIR $APP_HOME
 
-# Set production environment
-ENV RAILS_ENV="test" \
-    BUNDLE_DEPLOYMENT="1" \
-    BUNDLE_PATH="/usr/local/bundle" \
-    BUNDLE_WITHOUT="development"
-
-# Throw-away build stage to reduce size of final image
-FROM base AS build
-
-# Install packages needed to build gems
-RUN apt-get update -qq && \
-    apt-get install --no-install-recommends -y build-essential git libyaml-dev pkg-config && \
-    rm -rf /var/lib/apt/lists /var/cache/apt/archives
-
-# Final stage for app image
-FROM base
-
-# Copy built artifacts: gems, application
-COPY --from=build "${BUNDLE_PATH}" "${BUNDLE_PATH}"
-COPY --from=build /rails /rails
-
-# Run and own only the runtime files as a non-root user for security
-#RUN groupadd --system --gid 1000 rails && \
-#    useradd rails --uid 1000 --gid 1000 --create-home --shell /bin/bash && \
-#    chown -R rails:rails db log storage tmp
-#USER 1000:1000
-
-# Entrypoint prepares the database.
-ENTRYPOINT ["/rails/bin/docker-entrypoint"]
-
-# Start server via Thruster by default, this can be overwritten at runtime
-EXPOSE 80 443 3000
-CMD ["./bin/thrust", "./bin/rails", "server"]
+ADD . $APP_HOME
