@@ -1,4 +1,4 @@
-FROM cimg/ruby:3.1.6-node
+FROM cimg/ruby:3.2.4-node
 
 ########################################
 ENV APP_HOME=/myapp
