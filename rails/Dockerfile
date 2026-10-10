@@ -18,8 +18,8 @@ RUN sudo apt-get install -y libxml2-dev libxslt1-dev
 # for pdftk
 RUN sudo apt-get install -y pdftk
 
-RUN sudo mkdir $APP_HOME
-RUN sudo chown -R $USER:$USER $APP_HOME
+RUN sudo mkdir -p $APP_HOME $BUNDLE_PATH
+RUN sudo chown -R circleci:circleci $APP_HOME $BUNDLE_PATH
 WORKDIR $APP_HOME
 
 ADD . $APP_HOME
